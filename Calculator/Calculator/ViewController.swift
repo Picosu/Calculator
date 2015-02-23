@@ -17,7 +17,9 @@ class ViewController: UIViewController {
     @IBAction func appendDigit(sender: UIButton) {
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTypingANumber {
-            display.text = display.text! + digit
+            if (NSNumberFormatter().numberFromString(display.text! + digit) != nil) {
+                display.text = display.text! + digit
+            }
         } else {
             display.text = digit
             userIsInTheMiddleOfTypingANumber = true
@@ -30,23 +32,23 @@ class ViewController: UIViewController {
             enter()
         }
         switch operation {
-            case "×": preformOperation { $1 * $0 }
-            case "÷": preformOperation { $1 / $0 }
-            case "+": preformOperation { $1 + $0 }
-            case "−": preformOperation { $1 - $0 }
-            case "√": preformOperation { sqrt($0) }
+            case "×": performOperation { $1 * $0 }
+            case "÷": performOperation { $1 / $0 }
+            case "+": performOperation { $1 + $0 }
+            case "−": performOperation { $1 - $0 }
+            case "√": performOperation { sqrt($0) }
             default: break
         }
     }
     
-    func preformOperation(operation: (Double, Double) -> Double) {
+    func performOperation(operation: (Double, Double) -> Double) {
         if operandStack.count >= 2 {
             displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
             enter()
         }
     }
     
-    func preformOperation( operation: Double -> Double ) {
+    func performOperation( operation: Double -> Double ) {
         if operandStack.count >= 1 {
             displayValue = operation(operandStack.removeLast())
             enter()
