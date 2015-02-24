@@ -16,6 +16,8 @@ class ViewController: UIViewController {
     
     var brain = CalculatorBrain()
     
+    @IBOutlet weak var operationHistory: UILabel!
+    
     @IBAction func appendDigit(sender: UIButton) {
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTypingANumber {
