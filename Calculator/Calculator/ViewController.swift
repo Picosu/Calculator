@@ -14,6 +14,8 @@ class ViewController: UIViewController {
     
     var userIsInTheMiddleOfTypingANumber: Bool = false
     
+    var brain = CalculatorBrain()
+    
     @IBAction func appendDigit(sender: UIButton) {
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTypingANumber {
@@ -27,40 +29,28 @@ class ViewController: UIViewController {
     }
 
     @IBAction func operate(sender: UIButton) {
-        let operation = sender.currentTitle!
         if userIsInTheMiddleOfTypingANumber {
             enter()
         }
-        switch operation {
-            case "×": performOperation { $1 * $0 }
-            case "÷": performOperation { $1 / $0 }
-            case "+": performOperation { $1 + $0 }
-            case "−": performOperation { $1 - $0 }
-            case "√": performOperation { sqrt($0) }
-            default: break
+        if let operation = sender.currentTitle {
+            if let result = brain.performOperation(operation) {
+                displayValue = result
+            } else {
+                displayValue = 0
+            }
         }
     }
-    
-    func performOperation(operation: (Double, Double) -> Double) {
-        if operandStack.count >= 2 {
-            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
-            enter()
-        }
-    }
-    
-    func performOperation( operation: Double -> Double ) {
-        if operandStack.count >= 1 {
-            displayValue = operation(operandStack.removeLast())
-            enter()
-        }
-    }
-    
-    var operandStack = Array<Double>()
     
     @IBAction func enter() {
         userIsInTheMiddleOfTypingANumber = false
-        operandStack.append(displayValue)
-        println("operandStack : \(operandStack)")
+        if let result = brain.pushOperand(displayValue) {
+            displayValue = result
+        } else {
+            displayValue = 0
+        }
+        var angleValue = 45.0
+        var cosValue:Double = cos(angleValue * M_PI / 180)
+        println("valeur de cos : \(cosValue) pour angle : \(angleValue)")
     }
     
     var displayValue: Double {
