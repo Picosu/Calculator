@@ -48,9 +48,6 @@ class ViewController: UIViewController {
         } else {
             displayValue = 0
         }
-        var angleValue = 45.0
-        var cosValue:Double = cos(angleValue * M_PI / 180)
-        println("valeur de cos : \(cosValue) pour angle : \(angleValue)")
     }
     
     var displayValue: Double {
@@ -59,7 +56,6 @@ class ViewController: UIViewController {
         }
         set {
             display.text = "\(newValue)"
-            userIsInTheMiddleOfTypingANumber = false
         }
     }
     
