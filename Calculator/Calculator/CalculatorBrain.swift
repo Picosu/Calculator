@@ -82,6 +82,10 @@ class CalculatorBrain
         return result
     }
     
+    func clearStack() {
+        opStack = []
+    }
+    
     func pushOperand(operand: Double) -> Double? {
         opStack.append(Op.Operand(operand))
         return evaluate()
@@ -92,5 +96,9 @@ class CalculatorBrain
             opStack.append(operation)
         }
         return evaluate()
+    }
+    
+    func displayOperandStack() -> String {
+        return "\(self.opStack)"
     }
 }

@@ -18,6 +18,14 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var operationHistory: UILabel!
     
+    @IBOutlet weak var OperandStackLabel: UILabel!
+
+    @IBAction func erase(sender: UIButton) {
+        displayValue = 0
+        brain.clearStack()
+        OperandStackLabel.text = "Operand Stack"
+    }
+    
     @IBAction func appendDigit(sender: UIButton) {
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTypingANumber {
@@ -50,6 +58,7 @@ class ViewController: UIViewController {
         } else {
             displayValue = 0
         }
+        OperandStackLabel.text = brain.displayOperandStack()
     }
     
     var displayValue: Double {
