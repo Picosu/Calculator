@@ -14,6 +14,7 @@
 		C7FE31961E6747A1008D2018 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7FE31941E6747A1008D2018 /* LaunchScreen.storyboard */; };
 		C7FE31A11E6747A1008D2018 /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FE31A01E6747A1008D2018 /* CalculatorTests.swift */; };
 		C7FE31AC1E6747A1008D2018 /* CalculatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FE31AB1E6747A1008D2018 /* CalculatorUITests.swift */; };
+		C7FE31BF1E6770FA008D2018 /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FE31BE1E6770FA008D2018 /* CalculatorBrain.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		C7FE31A71E6747A1008D2018 /* CalculatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalculatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7FE31AB1E6747A1008D2018 /* CalculatorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorUITests.swift; sourceTree = "<group>"; };
 		C7FE31AD1E6747A1008D2018 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C7FE31BE1E6770FA008D2018 /* CalculatorBrain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorBrain.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,12 +99,10 @@
 		C7FE318A1E6747A1008D2018 /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
-				C7FE318B1E6747A1008D2018 /* AppDelegate.swift */,
+				C7FE31BE1E6770FA008D2018 /* CalculatorBrain.swift */,
 				C7FE318D1E6747A1008D2018 /* ViewController.swift */,
 				C7FE318F1E6747A1008D2018 /* Main.storyboard */,
-				C7FE31921E6747A1008D2018 /* Assets.xcassets */,
-				C7FE31941E6747A1008D2018 /* LaunchScreen.storyboard */,
-				C7FE31971E6747A1008D2018 /* Info.plist */,
+				C7FE31B91E675084008D2018 /* Supporting Files */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -125,6 +125,17 @@
 			path = CalculatorUITests;
 			sourceTree = "<group>";
 		};
+		C7FE31B91E675084008D2018 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C7FE318B1E6747A1008D2018 /* AppDelegate.swift */,
+				C7FE31921E6747A1008D2018 /* Assets.xcassets */,
+				C7FE31941E6747A1008D2018 /* LaunchScreen.storyboard */,
+				C7FE31971E6747A1008D2018 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -135,6 +146,7 @@
 				C7FE31841E6747A1008D2018 /* Sources */,
 				C7FE31851E6747A1008D2018 /* Frameworks */,
 				C7FE31861E6747A1008D2018 /* Resources */,
+				C1A644FE7F85AFB409DC6901 /* Tailor */,
 			);
 			buildRules = (
 			);
@@ -257,11 +269,29 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		C1A644FE7F85AFB409DC6901 /* Tailor */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = Tailor;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if hash tailor 2>/dev/null; then\n  tailor\nelse\n  echo \"warning: Please install Tailor from https://tailor.sh\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		C7FE31841E6747A1008D2018 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7FE31BF1E6770FA008D2018 /* CalculatorBrain.swift in Sources */,
 				C7FE318E1E6747A1008D2018 /* ViewController.swift in Sources */,
 				C7FE318C1E6747A1008D2018 /* AppDelegate.swift in Sources */,
 			);
@@ -514,6 +544,7 @@
 				C7FE31B21E6747A1008D2018 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C7FE31B31E6747A1008D2018 /* Build configuration list for PBXNativeTarget "CalculatorTests" */ = {
 			isa = XCConfigurationList;
@@ -522,6 +553,7 @@
 				C7FE31B51E6747A1008D2018 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C7FE31B61E6747A1008D2018 /* Build configuration list for PBXNativeTarget "CalculatorUITests" */ = {
 			isa = XCConfigurationList;
@@ -530,6 +562,7 @@
 				C7FE31B81E6747A1008D2018 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
