@@ -2,12 +2,12 @@
 //  CalculatorTests.swift
 //  CalculatorTests
 //
-//  Created by Maxence de Cussac on 19/02/2015.
-//  Copyright (c) 2015 Maxence de Cussac. All rights reserved.
+//  Created by Maxence de Cussac on 01/03/2017.
+//  Copyright © 2017 Maxence de Cussac. All rights reserved.
 //
 
-import UIKit
 import XCTest
+@testable import Calculator
 
 class CalculatorTests: XCTestCase {
     
@@ -23,12 +23,12 @@ class CalculatorTests: XCTestCase {
     
     func testExample() {
         // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measureBlock() {
+        self.measure {
             // Put the code you want to measure the time of here.
         }
     }

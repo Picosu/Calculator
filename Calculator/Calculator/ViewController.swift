@@ -2,74 +2,24 @@
 //  ViewController.swift
 //  Calculator
 //
-//  Created by Maxence de Cussac on 19/02/2015.
-//  Copyright (c) 2015 Maxence de Cussac. All rights reserved.
+//  Created by Maxence de Cussac on 01/03/2017.
+//  Copyright © 2017 Maxence de Cussac. All rights reserved.
 //
 
 import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var display: UILabel!
-    
-    var userIsInTheMiddleOfTypingANumber: Bool = false
-    
-    var brain = CalculatorBrain()
-    
-    @IBOutlet weak var operationHistory: UILabel!
-    
-    @IBOutlet weak var OperandStackLabel: UILabel!
-
-    @IBAction func erase(sender: UIButton) {
-        displayValue = 0
-        brain.clearStack()
-        OperandStackLabel.text = "Operand Stack"
-    }
-    
-    @IBAction func appendDigit(sender: UIButton) {
-        let digit = sender.currentTitle!
-        if userIsInTheMiddleOfTypingANumber {
-            if (NSNumberFormatter().numberFromString(display.text! + digit) != nil) {
-                display.text = display.text! + digit
-            }
-        } else {
-            display.text = digit
-            userIsInTheMiddleOfTypingANumber = true
-        }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
     }
 
-    @IBAction func operate(sender: UIButton) {
-        if userIsInTheMiddleOfTypingANumber {
-            enter()
-        }
-        if let operation = sender.currentTitle {
-            if let result = brain.performOperation(operation) {
-                displayValue = result
-            } else {
-                displayValue = 0
-            }
-        }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
-    
-    @IBAction func enter() {
-        userIsInTheMiddleOfTypingANumber = false
-        if let result = brain.pushOperand(displayValue) {
-            displayValue = result
-        } else {
-            displayValue = 0
-        }
-        OperandStackLabel.text = brain.displayOperandStack()
-    }
-    
-    var displayValue: Double {
-        get {
-            return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
-        }
-        set {
-            display.text = "\(newValue)"
-        }
-    }
-    
-    
+
+
 }
 
