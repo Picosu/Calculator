@@ -23,9 +23,16 @@ struct CalculatorBrain {
     private var operations: Dictionary<String, Operation> = [
         "π": Operation.constant(Double.pi),
         "e": Operation.constant(M_E),
+        "Rand": Operation.constant(Double(arc4random())),
         "cos": Operation.unaryOperation(cos),
+        "√": Operation.unaryOperation(sqrt),
         "sin": Operation.unaryOperation(sin),
-        "×": Operation.binaryOperation { $0 * $1}
+        "×": Operation.binaryOperation { $0 * $1},
+        "÷": Operation.binaryOperation { $0 / $1 },
+        "+": Operation.binaryOperation { $0 + $1 },
+        "−": Operation.binaryOperation { $0 - $1 },
+        "10ˣ": Operation.unaryOperation { pow(10, $0) },
+        "=": Operation.equals
     ]
 
     mutating func performOperation(_ symbol: String) {
@@ -39,17 +46,26 @@ struct CalculatorBrain {
                 }
             case .binaryOperation(let function):
                 if accumulator != nil {
-                    pbo = PendingBinaryOperation(function: function, firstOperand: accumulator!)
+                    pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accumulator!)
                     accumulator = nil
                 }
                 break
             case .equals:
-                break
+                if accumulator != nil {
+                    accumulator = pendingBinaryOperation?.perform(with: accumulator!)
+                }
             }
         }
     }
 
-    private var pbo: PendingBinaryOperation?
+    private mutating func performPendingBinaryOperation() {
+        if accumulator != nil && pendingBinaryOperation != nil {
+            accumulator = pendingBinaryOperation!.perform(with: accumulator!)
+            pendingBinaryOperation = nil
+        }
+    }
+
+    private var pendingBinaryOperation: PendingBinaryOperation?
 
     struct PendingBinaryOperation {
         let function: (Double, Double) -> Double
