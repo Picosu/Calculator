@@ -18,7 +18,19 @@ struct CalculatorBrain {
         case equals
     }
 
+	private let spaceString = " "
+
     private var accumulator: Double?
+
+	private var resultIsPending: Bool {
+		return pendingBinaryOperation != nil
+	}
+
+	public var description: String? = "" {
+		didSet {
+			print("description : \(description ?? spaceString)")
+		}
+	}
 
     private var operations: Dictionary<String, Operation> = [
         "π": Operation.constant(Double.pi),
@@ -40,14 +52,21 @@ struct CalculatorBrain {
             switch operation {
             case .constant(let value):
                 accumulator = value
+				description?.append(symbol)
             case .unaryOperation(let function):
                 if accumulator != nil {
                     accumulator = function(accumulator!)
+					if description != nil && resultIsPending {
+						description = ("\(symbol)(\(description!))")
+					} else {
+						description = ("\(symbol)(\(accumulator))")
+					}
                 }
             case .binaryOperation(let function):
                 if accumulator != nil {
                     pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accumulator!)
                     accumulator = nil
+					description?.append(spaceString + symbol + spaceString)
                 }
                 break
             case .equals:
@@ -79,6 +98,7 @@ struct CalculatorBrain {
 
     mutating func setOperand(_ operand: Double) {
         accumulator = operand
+		description?.append(String(operand))
     }
 
     var result: Double? {

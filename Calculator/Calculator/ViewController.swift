@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
+	static let spaceString = " "
     var userIsInTheMiddleOfTyping = false
 
     @IBOutlet weak var display: UILabel!
@@ -20,8 +21,8 @@ class ViewController: UIViewController {
         if userIsInTheMiddleOfTyping {
             let textCurrentlyInDisplay = display.text!
             if Double(textCurrentlyInDisplay + digit) != nil {
-                display.text = textCurrentlyInDisplay + digit
-            }
+				display.text = textCurrentlyInDisplay + digit
+			}
         } else {
             display.text = digit
             userIsInTheMiddleOfTyping = true

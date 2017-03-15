@@ -8,6 +8,7 @@
 
 import UIKit
 
+@IBDesignable
 class BorderedButton: UIButton {
 
     /*
@@ -17,5 +18,32 @@ class BorderedButton: UIButton {
         // Drawing code
     }
     */
+
+	@IBInspectable
+	var borderWidth: CGFloat = 0.3
+
+	@IBInspectable
+	var borderColor: UIColor = UIColor.darkGray
+
+	private func setup() {
+		layer.borderWidth = borderWidth
+		layer.borderColor = borderColor.cgColor
+	}
+
+	required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+
+		setup()
+	}
+
+	override init(frame: CGRect) {
+		super.init(frame: frame)
+		setup()
+	}
+
+	override public func layoutSubviews() {
+		super.layoutSubviews()
+		setup()
+	}
 
 }

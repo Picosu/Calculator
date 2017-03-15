@@ -7,3 +7,10 @@
 //
 
 import Foundation
+
+extension String {
+	var stringContainsPoint: Bool {
+		return self.contains(".")
+	}
+
+}
