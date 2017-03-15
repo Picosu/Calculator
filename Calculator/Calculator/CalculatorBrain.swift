@@ -55,22 +55,25 @@ struct CalculatorBrain {
 				description?.append(symbol)
             case .unaryOperation(let function):
                 if accumulator != nil {
+                    description?.append("\(symbol)" + "(\(String(accumulator!)))")
                     accumulator = function(accumulator!)
-					if description != nil && resultIsPending {
-						description = ("\(symbol)(\(description!))")
-					} else {
-						description = ("\(symbol)(\(accumulator))")
-					}
+//					if description != nil && resultIsPending {
+//						description = ("\(symbol)(\(description!))")
+//					} else {
+//						description = ("\(symbol)(\(accumulator))")
+//					}
                 }
             case .binaryOperation(let function):
                 if accumulator != nil {
                     pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accumulator!)
+                    description?.append(String(accumulator!) + spaceString + symbol + spaceString)
                     accumulator = nil
-					description?.append(spaceString + symbol + spaceString)
                 }
                 break
             case .equals:
-                if accumulator != nil {
+                if accumulator != nil && resultIsPending {
+//                    description = description?.replacingOccurrences(of: "=", with: "")
+                    description?.append(String(accumulator!) + spaceString + "=")
                     accumulator = pendingBinaryOperation?.perform(with: accumulator!)
                 }
             }
@@ -98,7 +101,6 @@ struct CalculatorBrain {
 
     mutating func setOperand(_ operand: Double) {
         accumulator = operand
-		description?.append(String(operand))
     }
 
     var result: Double? {
