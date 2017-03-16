@@ -18,23 +18,30 @@ struct CalculatorBrain {
         case equals
     }
 
-	private let spaceString = " "
+    // MARK: - Public properties
+    var resultIsPending: Bool {
+        return pendingBinaryOperation != nil
+    }
+
+    var description: String? = "" {
+        didSet {
+            description?.append(spaceString)
+        }
+    }
+    var result: Double? {
+        get {
+            return accumulator
+        }
+    }
+
+    // MARK: - Private properties
+    private let spaceString = " "
 
 	private var accumulator: Double? {
 		didSet {
 			if accumulator != nil {
-				description?.append(spaceString + String(accumulator!))
+				description?.append(String(accumulator!))
 			}
-		}
-	}
-
-	var resultIsPending: Bool {
-		return pendingBinaryOperation != nil
-	}
-
-	public var description: String? = "" {
-		didSet {
-			print("description : \(description ?? spaceString)")
 		}
 	}
 
@@ -55,29 +62,26 @@ struct CalculatorBrain {
 
     mutating func performOperation(_ symbol: String) {
         if let operation = operations[symbol] {
-			description?.append(spaceString + symbol)
             switch operation {
             case .constant(let value):
                 accumulator = value
             case .unaryOperation(let function):
                 if accumulator != nil {
                     accumulator = function(accumulator!)
+                    description?.append(symbol)
                 }
             case .binaryOperation(let function):
                 if accumulator != nil {
-					if resultIsPending {
-						performPendingBinaryOperation(withDescription: false)
-					}
                     pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accumulator!)
                     accumulator = nil
+                    description?.append(symbol)
 				}
                 break
             case .equals:
-                if accumulator != nil && resultIsPending {
+                performPendingBinaryOperation()
+                if accumulator != nil {
                     accumulator = pendingBinaryOperation?.perform(with: accumulator!)
-					let stringToRemove = spaceString + "=" + spaceString + String(accumulator!)
-					description = description?.replacingOccurrences(of: stringToRemove, with: "")
-					pendingBinaryOperation = nil
+                    pendingBinaryOperation = nil
                 }
             }
         }
@@ -89,16 +93,6 @@ struct CalculatorBrain {
             pendingBinaryOperation = nil
         }
     }
-
-	private mutating func performPendingBinaryOperation(withDescription shouldAddToDescription: Bool) {
-		performPendingBinaryOperation()
-		guard let accumulator = accumulator else {
-			return
-		}
-		let stringToRemove = spaceString + String(accumulator)
-
-		description = description?.replacingOccurrences(of: stringToRemove, with: "")
-	}
 
     private var pendingBinaryOperation: PendingBinaryOperation?
 
@@ -113,19 +107,13 @@ struct CalculatorBrain {
     }
 
 	mutating func clear() {
-		description = ""
 		accumulator = 0.0
+        description = ""
 		pendingBinaryOperation = nil
 	}
 
     mutating func setOperand(_ operand: Double) {
         accumulator = operand
-    }
-
-    var result: Double? {
-        get {
-            return accumulator
-        }
     }
 
 }

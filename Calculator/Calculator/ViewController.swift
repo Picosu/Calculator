@@ -57,9 +57,7 @@ class ViewController: UIViewController {
         }
 
 		operations.text = brain.description
-		if let description = brain.description, !description.isEmpty {
-			operations.text?.append((brain.resultIsPending ? " …" : " ="))
-		}
+        operations.text?.append(brain.resultIsPending ? " ..." : " =")
     }
 
 	@IBAction func clear() {
