@@ -39,6 +39,8 @@ struct CalculatorBrain {
 
 	private var accumulator: Double?
 
+	private var tupleAccumulator: (value: Double, description: String)?
+
     private var operations: Dictionary<String, Operation> = [
         "π": Operation.constant(Double.pi),
         "e": Operation.constant(M_E),
@@ -59,25 +61,47 @@ struct CalculatorBrain {
             switch operation {
             case .constant(let value):
                 accumulator = value
+				description?.append(String(accumulator!))
+
             case .unaryOperation(let function):
                 if accumulator != nil {
+					if resultIsPending {
+						description?.append("\(symbol)(\(String(accumulator!)))")
+					} else if description != nil {
+						description = "\(symbol)(\(description!))"
+					}
                     accumulator = function(accumulator!)
+					tupleAccumulator?.description = "\(symbol)(\(tupleAccumulator?.description))"
                 }
+
             case .binaryOperation(let function):
                 if accumulator != nil {
+					description?.append(String(accumulator!))
+					description?.append(symbol)
+					tupleAccumulator = (accumulator!, "\(accumulator!) \(symbol)")
+					if resultIsPending {
+						performPendingBinaryOperation()
+					}
                     pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accumulator!)
                     accumulator = nil
 				}
-                break
+
             case .equals:
+				if resultIsPending {
+					description?.append(String(accumulator!))
+				}
                 performPendingBinaryOperation()
+//				tupleAccumulator = (accumulator!, description!)
+				print(tupleAccumulator!)
             }
         }
     }
 
     private mutating func performPendingBinaryOperation() {
         if accumulator != nil && pendingBinaryOperation != nil {
+			tupleAccumulator?.description.append(spaceString + String(accumulator!))
             accumulator = pendingBinaryOperation!.perform(with: accumulator!)
+			tupleAccumulator?.value = accumulator!
             pendingBinaryOperation = nil
         }
     }
@@ -95,7 +119,7 @@ struct CalculatorBrain {
     }
 
 	mutating func clear() {
-		accumulator = 0.0
+		accumulator = 0
         description = ""
 		pendingBinaryOperation = nil
 	}
