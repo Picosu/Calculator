@@ -37,13 +37,7 @@ struct CalculatorBrain {
     // MARK: - Private properties
     private let spaceString = " "
 
-	private var accumulator: Double? {
-		didSet {
-			if accumulator != nil {
-				description?.append(String(accumulator!))
-			}
-		}
-	}
+	private var accumulator: Double?
 
     private var operations: Dictionary<String, Operation> = [
         "π": Operation.constant(Double.pi),
@@ -68,16 +62,11 @@ struct CalculatorBrain {
             case .unaryOperation(let function):
                 if accumulator != nil {
                     accumulator = function(accumulator!)
-                    description?.append(symbol)
                 }
             case .binaryOperation(let function):
                 if accumulator != nil {
-                    if resultIsPending {
-                        performPendingBinaryOperation()
-                    }
                     pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accumulator!)
                     accumulator = nil
-                    description?.append(symbol)
 				}
                 break
             case .equals:
