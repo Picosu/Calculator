@@ -39,6 +39,8 @@ struct CalculatorBrain {
 
 	private var accumulator: Double?
 
+    private var isResultForOperation: Bool = false
+
     private var operations: Dictionary<String, Operation> = [
         "π": Operation.constant(Double.pi),
         "e": Operation.constant(M_E),
@@ -59,21 +61,39 @@ struct CalculatorBrain {
             switch operation {
             case .constant(let value):
                 accumulator = value
+                description?.append(String(accumulator!))
             case .unaryOperation(let function):
                 if accumulator != nil {
+                    if isResultForOperation && description != nil {
+                        description = symbol + "(\(description!))"
+                    } else {
+                        description?.append(symbol + "(\(accumulator!))")
+                    }
                     accumulator = function(accumulator!)
+                    isResultForOperation = true
                 }
             case .binaryOperation(let function):
                 if accumulator != nil {
+                    if !isResultForOperation {
+                        description?.append(String(accumulator!))
+                    }
+                    description?.append(symbol)
+
 					if resultIsPending {
 						performPendingBinaryOperation()
+                        isResultForOperation = true
 					}
                     pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accumulator!)
                     accumulator = nil
+                    isResultForOperation = false
 				}
                 break
             case .equals:
+                if resultIsPending && !isResultForOperation {
+                    description?.append(String(accumulator!))
+                }
                 performPendingBinaryOperation()
+                isResultForOperation = true
             }
         }
     }
@@ -98,9 +118,10 @@ struct CalculatorBrain {
     }
 
 	mutating func clear() {
-		accumulator = 0.0
+		accumulator = 0
         description = ""
 		pendingBinaryOperation = nil
+        isResultForOperation = false
 	}
 
     mutating func setOperand(_ operand: Double) {
